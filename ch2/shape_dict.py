@@ -6,12 +6,17 @@ def square_perimeter(thing):
 def square_area(thing):
     return thing["side"] ** 2
 
+Square = {
+    "perimeter": square_perimeter,
+    "area": square_area,
+    "_classname": "Square"
+}
+
 def square_new(name, side):
     return {
         "name": name,
         "side": side,
-        "perimeter": square_perimeter,
-        "area": square_area
+        "_class": Square 
     }
 
 def circle_perimeter(thing):
@@ -20,20 +25,25 @@ def circle_perimeter(thing):
 def circle_area(thing):
     return math.pi * thing["radius"] ** 2
 
+Circle = {
+    "perimeter": circle_perimeter,
+    "area": circle_area,
+    "_classname": "Circle "
+}
 def circle_new(name, radius):
     return {
         "name": name,
         "radius": radius,
-        "perimeter": circle_perimeter,
-        "area": circle_area
+        "_class": Circle
     }
 
 def call(thing, method_name):
-    return thing[method_name](thing)
+    return thing["_class"][method_name](thing)
 
 examples = [square_new("sq", 3), circle_new("ci", 2)]
 for ex in examples:
     n = ex["name"]
     p = call(ex, "perimeter")
     a = call(ex, "area")
-    print(f"{n} {p:.2f} {a:.2f}")
+    c = ex["_class"]["_classname"]
+    print(f"{n} is a {c}: {p:.2f} {a:.2f}")
