@@ -6,5 +6,13 @@ def test_either_two_literals_first():
     assert Either(Lit("a"), Lit("b")).match("a")
 
 def test_either_two_literals_not_both():
-    # /{a,b}/ doesn't matches "ab"
+    # /{a,b}/ doesn't matche "ab"
     assert not Either(Lit("a"), Lit("b")).match("ab")
+
+def test_either_followed_by_literal_match():
+    # /{a,b}c/ matches "ac"
+    assert Either(Lit("a"), Lit("b"), Lit("c")).match("ac")
+
+def test_either_followed_by_literal_no_match():
+    # /{a,b}c/ doesn't matches "ax"
+    assert not Either(Lit("a"), Lit("b"), Lit("c")).match("ax")
