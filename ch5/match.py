@@ -5,6 +5,10 @@ class Match:
     def match(self, text):
         result = self._match(text, 0)
         return result == len(text)
+    def __eq__(self, other):
+        return (other is not None and
+                self.__class__ == other.__class__ and
+                self.rest == other.rest)
 
 class Null(Match):
     def __init__(self):
@@ -23,6 +27,11 @@ class Lit(Match):
         if text[start: end] != self.chars:
             return None
         return self.rest._match(text, end)
+
+    def __eq__(self, other):
+        return super().__eq__(other) and (
+            self.chars == other.chars
+        )
 
 class Any(Match):
     def __init__(self, rest=None):
@@ -49,4 +58,8 @@ class Either(Match):
                 if end == len(text):
                     return end
         return None
-
+    
+    def __eq__(self, other):
+        return (super().__eq__(other) and 
+                self.left == other.left and
+                self.right == other.right)
