@@ -6,7 +6,7 @@ class Tokenizer:
     def __init__(self):
         self._setup()
 
-    def _setup():
+    def _setup(self):
         self.result = []
         self.current = ""
 

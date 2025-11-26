@@ -1,3 +1,5 @@
+from tokenizer import Tokenizer
+
 def test_tok_empty_string():
     assert Tokenizer().tok("") == []
 
@@ -6,6 +8,6 @@ def test_tok_any_either():
             ["Any"],
             ["EitherStart"],
             ["Lit", "abc"],
-            ["Lit", "abc"]
+            ["Lit", "def"],
             ["EitherEnd"],
         ]
