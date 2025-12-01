@@ -1,3 +1,7 @@
+from string import ascii_letters
+
+CHARS = ascii_letters
+
 class Match:
     def __init__(self, rest):
         self.rest = rest if rest is not None else Null()
@@ -62,4 +66,19 @@ class OneOrMore(Match):
                 if end == len(text):
                     return end
         return None
+
+class Charset(Match):
+    def __init__(self, chars, rest=None):
+        super().__init__(rest)
+        self.chars = chars
+
+    def _match(self, text, start):
+        if text[start] in self.chars:
+            return self.rest._match(text, start + 1)
+        return None
+
+class Range(Charset):
+    def __init__(self, start, end, rest=None):
+        super().__init__(rest)
+        self.chars = CHARS[CHARS.index(start):CHARS.index(end) + 1]
 

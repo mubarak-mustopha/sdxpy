@@ -82,3 +82,20 @@ def test_one_or_more_followed_by_literal_no_match():
     # /a+abc/ doesn't match "abc"
     assert not OneOrMore("a", Lit("abc")).match("abc")
 
+def test_charset_match():
+    assert Charset("aeiou").match("a")
+
+def test_charset_no_match():
+    assert not Charset("aeiou").match("b")
+
+def test_charset_match_first():
+    assert Charset("aeiou", Any()).match("aux")
+
+def test_charset_match_last():
+    assert Lit("xy",Charset("aeiou")).match("xyu")
+
+def test_range_match():
+    assert Range("a", "z").match("r")
+
+def test_range_no_match():
+    assert not Range("a", "j").match("k")
