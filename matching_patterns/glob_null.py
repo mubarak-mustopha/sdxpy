@@ -50,3 +50,16 @@ class Either(Match):
                     return end
         return None
 
+class OneOrMore(Match):
+    def __init__(self, char, rest=None):
+        self.char = char
+        super().__init__(rest)
+
+    def _match(self, text, start):  
+        for i in range(start, len(text)):
+            if text[i] == self.char:
+                end = self.rest._match(text, i + 1)
+                if end == len(text):
+                    return end
+        return None
+

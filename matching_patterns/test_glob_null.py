@@ -1,4 +1,4 @@
-from glob_null import Any, Either, Lit, Null
+from glob_null import *
 
 def test_any_matches_empty():
     # /*/ matches ""
@@ -56,3 +56,29 @@ def test_literal_followed_by_literal_match():
 def test_literal_followed_by_literal_no_match():
     # /a/ + /b/ doesn't matches "ac" 
     assert not Lit("a", Lit("b")).match("ac")
+
+def test_one_or_more_match_entire_string():
+    assert OneOrMore("a").match("a")
+    assert OneOrMore("a").match("aaa")
+
+def test_one_or_more_match_as_prefix():
+    # /a+bc/ matches "aabc"
+    assert OneOrMore("a", Lit("bc")).match("aabc")
+
+def test_one_or_more_match_as_suffix():
+    # /abc+/ matches "abccc"
+    assert Lit("ab", OneOrMore("c")).match("abccc")
+
+def test_one_or_more_match_interior():
+    # /ab+c/ matches "abc" and "abbc"
+    assert Lit("a", OneOrMore("b", Lit("c"))).match("abc")
+    assert Lit("a", OneOrMore("b", Lit("c"))).match("abbc")
+
+def test_one_or_more_followed_by_literal_match():
+    # /a+abc/ matches "aabc"
+    assert OneOrMore("a", Lit("abc")).match("aabc")
+
+def test_one_or_more_followed_by_literal_no_match():
+    # /a+abc/ doesn't match "abc"
+    assert not OneOrMore("a", Lit("abc")).match("abc")
+
